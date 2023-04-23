@@ -3,6 +3,8 @@ package niffler.test;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import io.qameta.allure.AllureId;
+import niffler.jupiter.annotation.GenerateSpend;
 import niffler.jupiter.GenerateCategory;
 import niffler.jupiter.GenerateCategoryExtension;
 import niffler.jupiter.GenerateSpend;
@@ -45,6 +47,7 @@ public class SpendsWebTest {
             amount = 52000.00,
             category = "New category"
     )
+    @AllureId("101")
     @Test
     void spendShouldBeDeletedByActionInTable(SpendJson spend) {
         $(".spendings-table tbody").$$("tr")
