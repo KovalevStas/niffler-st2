@@ -1,5 +1,6 @@
 package niffler.db.dao;
 
+
 import niffler.db.DataSourceProvider;
 import niffler.db.ServiceDB;
 import niffler.db.entity.AuthorityEntity;
