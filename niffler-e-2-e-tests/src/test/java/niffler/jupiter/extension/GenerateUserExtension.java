@@ -2,7 +2,7 @@ package niffler.jupiter.extension;
 
 import com.github.javafaker.Faker;
 import niffler.db.dao.NifflerUsersDAO;
-import niffler.db.dao.NifflerUsersDAOJdbc;
+import niffler.db.dao.NifflerUsersDAOSpringJdbc;
 import niffler.db.entity.Authority;
 import niffler.db.entity.AuthorityEntity;
 import niffler.db.entity.UserEntity;
@@ -16,7 +16,7 @@ public class GenerateUserExtension implements ParameterResolver, BeforeEachCallb
     public static ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace
             .create(GenerateUserExtension.class);
 
-    private final NifflerUsersDAO usersDAO = new NifflerUsersDAOJdbc();
+    private final NifflerUsersDAO usersDAO = new NifflerUsersDAOSpringJdbc();
     Faker usFaker = new Faker(new Locale("en-US"));
 
     @Override
