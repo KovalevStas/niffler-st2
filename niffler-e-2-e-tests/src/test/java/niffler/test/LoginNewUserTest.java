@@ -46,6 +46,6 @@ public class LoginNewUserTest extends BaseWebTest {
         user.setEnabled(false);
         usersDAO.updateUser(user);
         System.out.println(usersDAO.getUser(userId).toString());
-        usersDAO.deleteUser(userId);
+        usersDAO.removeUser(user);
     }
 }

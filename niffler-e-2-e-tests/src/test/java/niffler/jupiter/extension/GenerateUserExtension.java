@@ -2,7 +2,7 @@ package niffler.jupiter.extension;
 
 import com.github.javafaker.Faker;
 import niffler.db.dao.NifflerUsersDAO;
-import niffler.db.dao.NifflerUsersDAOSpringJdbc;
+import niffler.db.dao.NifflerUsersDAOHibernate;
 import niffler.db.entity.Authority;
 import niffler.db.entity.AuthorityEntity;
 import niffler.db.entity.UserEntity;
@@ -11,12 +11,12 @@ import org.junit.jupiter.api.extension.*;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class GenerateUserExtension implements ParameterResolver, BeforeEachCallback {
+public class GenerateUserExtension implements ParameterResolver, BeforeEachCallback, AfterEachCallback {
 
     public static ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace
             .create(GenerateUserExtension.class);
 
-    private final NifflerUsersDAO usersDAO = new NifflerUsersDAOSpringJdbc();
+    private final NifflerUsersDAO usersDAO = new NifflerUsersDAOHibernate();
     Faker usFaker = new Faker(new Locale("en-US"));
 
     @Override
@@ -49,5 +49,10 @@ public class GenerateUserExtension implements ParameterResolver, BeforeEachCallb
     public UserEntity resolveParameter(ParameterContext parameterContext,
                                        ExtensionContext extensionContext) throws ParameterResolutionException {
         return extensionContext.getStore(NAMESPACE).get("user", UserEntity.class);
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) {
+        usersDAO.removeUser((UserEntity) context.getStore(NAMESPACE).get("user"));
     }
 }

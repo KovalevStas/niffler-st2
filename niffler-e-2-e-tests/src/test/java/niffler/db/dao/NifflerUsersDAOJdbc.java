@@ -36,16 +36,15 @@ public class NifflerUsersDAOJdbc implements NifflerUsersDAO {
                 stUser.setBoolean(5, user.getAccountNonLocked());
                 stUser.setBoolean(6, user.getCredentialsNonExpired());
                 executeUpdate = stUser.executeUpdate();
-                final UUID userId;
                 try (ResultSet resultSet = stUser.getGeneratedKeys()) {
                     if (resultSet.next())
-                        userId = UUID.fromString(resultSet.getString(1));
+                        user.setId(UUID.fromString(resultSet.getString(1)));
                     else
                         throw new SQLException("User not fined");
                 }
 
                 for (AuthorityEntity autority : user.getAuthorities()) {
-                    stAutorities.setObject(1, userId);
+                    stAutorities.setObject(1, user.getId());
                     stAutorities.setString(2, autority.getAuthority().name());
                     stAutorities.addBatch();
                     stAutorities.clearParameters();
@@ -125,26 +124,6 @@ public class NifflerUsersDAOJdbc implements NifflerUsersDAO {
             throw new RuntimeException(e);
         }
         return executeUpdate;
-    }
-
-    @Override
-    public int deleteUser(String userId) {
-        int executeDelete;
-        try (Connection conn = ds.getConnection();
-             PreparedStatement st = conn.prepareStatement("DELETE from authorities a where a.user_id = ?::uuid")) {
-            st.setString(1, userId);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try (Connection conn = ds.getConnection();
-             PreparedStatement st = conn.prepareStatement("DELETE from users u where u.id = ?::uuid")) {
-            st.setString(1, userId);
-            executeDelete = st.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return executeDelete;
     }
 
     @Override

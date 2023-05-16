@@ -5,8 +5,6 @@ import niffler.db.entity.UserEntity;
 import niffler.db.jpa.EmfProvider;
 import niffler.db.jpa.JpaTransactionManager;
 
-import java.sql.SQLException;
-
 public class NifflerUsersDAOHibernate extends JpaTransactionManager implements NifflerUsersDAO {
 
     public NifflerUsersDAOHibernate() {
@@ -15,8 +13,10 @@ public class NifflerUsersDAOHibernate extends JpaTransactionManager implements N
 
     @Override
     public int createUser(UserEntity user) {
+        String pass = user.getPassword();
         user.setPassword(pe.encode(user.getPassword()));
         persist(user);
+        user.setPassword(pass);
         return 0;
     }
 
@@ -36,11 +36,7 @@ public class NifflerUsersDAOHibernate extends JpaTransactionManager implements N
 
     @Override
     public int updateUser(UserEntity user) {
-        return 0;
-    }
-
-    @Override
-    public int deleteUser(String userId) {
+        merge(user);
         return 0;
     }
 
