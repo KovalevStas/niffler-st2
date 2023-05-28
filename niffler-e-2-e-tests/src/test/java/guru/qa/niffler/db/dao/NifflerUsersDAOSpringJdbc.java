@@ -1,9 +1,9 @@
 package guru.qa.niffler.db.dao;
 
-import niffler.db.DataSourceProvider;
-import niffler.db.ServiceDB;
-import niffler.db.entity.AuthorityEntity;
-import niffler.db.entity.UserEntity;
+import guru.qa.niffler.db.DataSourceProvider;
+import guru.qa.niffler.db.ServiceDB;
+import guru.qa.niffler.db.entity.AuthorityEntity;
+import guru.qa.niffler.db.entity.UserEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

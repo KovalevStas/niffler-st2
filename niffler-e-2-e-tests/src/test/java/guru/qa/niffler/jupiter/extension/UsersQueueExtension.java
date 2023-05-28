@@ -4,32 +4,22 @@ import guru.qa.niffler.jupiter.annotation.User;
 import guru.qa.niffler.jupiter.annotation.User.UserType;
 import guru.qa.niffler.model.UserJson;
 import io.qameta.allure.AllureId;
+import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
 import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import niffler.jupiter.annotation.User;
-import niffler.jupiter.annotation.User.UserType;
-import niffler.model.UserJson;
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
-import org.junit.jupiter.api.extension.ParameterResolver;
 
 public class UsersQueueExtension implements
         BeforeEachCallback,
         AfterTestExecutionCallback,
         ParameterResolver {
 
-    public static Namespace USER_EXTENSION_NAMESPACE = Namespace.create(UsersQueueExtension.class);
-
     private static final Queue<UserJson> USERS_WITH_FRIENDS_QUEUE = new ConcurrentLinkedQueue<>();
     private static final Queue<UserJson> USERS_INVITATION_SENT_QUEUE = new ConcurrentLinkedQueue<>();
     private static final Queue<UserJson> USERS_INVITATION_RECEIVED_QUEUE = new ConcurrentLinkedQueue<>();
+    public static Namespace USER_EXTENSION_NAMESPACE = Namespace.create(UsersQueueExtension.class);
 
     static {
         USERS_WITH_FRIENDS_QUEUE.addAll(
@@ -41,6 +31,13 @@ public class UsersQueueExtension implements
         USERS_INVITATION_RECEIVED_QUEUE.addAll(
                 List.of(userJson("anna", "12345"), userJson("bill", "12345"))
         );
+    }
+
+    private static UserJson userJson(String userName, String password) {
+        UserJson user = new UserJson();
+        user.setUsername(userName);
+        user.setPassword(password);
+        return user;
     }
 
     @Override
@@ -108,12 +105,5 @@ public class UsersQueueExtension implements
         return Objects
                 .requireNonNull(context.getRequiredTestMethod().getAnnotation(AllureId.class))
                 .value();
-    }
-
-    private static UserJson userJson(String userName, String password) {
-        UserJson user = new UserJson();
-        user.setUsername(userName);
-        user.setPassword(password);
-        return user;
     }
 }

@@ -14,38 +14,38 @@ import org.openqa.selenium.Cookie;
 
 public class ApiLoginExtension implements BeforeEachCallback, AfterTestExecutionCallback {
 
-  private final AuthClient authClient = new AuthClient();
-  private static final String JSESSIONID = "JSESSIONID";
+    private static final String JSESSIONID = "JSESSIONID";
+    private final AuthClient authClient = new AuthClient();
 
-  @Override
-  public void beforeEach(ExtensionContext context) throws Exception {
-    ApiLogin apiLogin = context.getRequiredTestMethod().getAnnotation(ApiLogin.class);
-    if (apiLogin != null) {
-      doLogin(apiLogin.username(), apiLogin.password());
+    @Override
+    public void beforeEach(ExtensionContext context) throws Exception {
+        ApiLogin apiLogin = context.getRequiredTestMethod().getAnnotation(ApiLogin.class);
+        if (apiLogin != null) {
+            doLogin(apiLogin.username(), apiLogin.password());
+        }
     }
-  }
 
-  private void doLogin(String username, String password) {
-    final SessionContext sessionContext = SessionContext.getInstance();
-    final CookieContext cookieContext = CookieContext.getInstance();
-    final String codeVerifier = OauthUtils.generateCodeVerifier();
-    final String codeChallenge = OauthUtils.generateCodeChallange(codeVerifier);
-    sessionContext.setCodeVerifier(codeVerifier);
-    sessionContext.setCodeChallenge(codeChallenge);
+    private void doLogin(String username, String password) {
+        final SessionContext sessionContext = SessionContext.getInstance();
+        final CookieContext cookieContext = CookieContext.getInstance();
+        final String codeVerifier = OauthUtils.generateCodeVerifier();
+        final String codeChallenge = OauthUtils.generateCodeChallange(codeVerifier);
+        sessionContext.setCodeVerifier(codeVerifier);
+        sessionContext.setCodeChallenge(codeChallenge);
 
-    authClient.authorizePreRequest();
-    authClient.login(username, password);
-    final String token = authClient.getToken();
-    Selenide.sessionStorage().setItem("id_token", token);
-    Selenide.sessionStorage().setItem("codeChallenge", sessionContext.getCodeChallenge());
-    Selenide.sessionStorage().setItem("codeVerifier", sessionContext.getCodeVerifier());
-    Cookie jssesionIdCookie = new Cookie(JSESSIONID, cookieContext.getCookie(JSESSIONID));
-    WebDriverRunner.getWebDriver().manage().addCookie(jssesionIdCookie);
-  }
+        authClient.authorizePreRequest();
+        authClient.login(username, password);
+        final String token = authClient.getToken();
+        Selenide.sessionStorage().setItem("id_token", token);
+        Selenide.sessionStorage().setItem("codeChallenge", sessionContext.getCodeChallenge());
+        Selenide.sessionStorage().setItem("codeVerifier", sessionContext.getCodeVerifier());
+        Cookie jssesionIdCookie = new Cookie(JSESSIONID, cookieContext.getCookie(JSESSIONID));
+        WebDriverRunner.getWebDriver().manage().addCookie(jssesionIdCookie);
+    }
 
-  @Override
-  public void afterTestExecution(ExtensionContext context) throws Exception {
-    SessionContext.getInstance().release();
-    CookieContext.getInstance().release();
-  }
+    @Override
+    public void afterTestExecution(ExtensionContext context) throws Exception {
+        SessionContext.getInstance().release();
+        CookieContext.getInstance().release();
+    }
 }

@@ -1,11 +1,11 @@
-package niffler.jupiter.extension;
+package guru.qa.niffler.jupiter.extension;
 
 import com.github.javafaker.Faker;
-import niffler.db.dao.NifflerUsersDAO;
-import niffler.db.dao.NifflerUsersDAOHibernate;
-import niffler.db.entity.Authority;
-import niffler.db.entity.AuthorityEntity;
-import niffler.db.entity.UserEntity;
+import guru.qa.niffler.db.dao.NifflerUsersDAO;
+import guru.qa.niffler.db.dao.NifflerUsersDAOHibernate;
+import guru.qa.niffler.db.entity.Authority;
+import guru.qa.niffler.db.entity.AuthorityEntity;
+import guru.qa.niffler.db.entity.UserEntity;
 import org.junit.jupiter.api.extension.*;
 
 import java.util.Arrays;

@@ -1,23 +1,12 @@
 package guru.qa.niffler.db.dao;
 
 
-import niffler.db.DataSourceProvider;
-import niffler.db.ServiceDB;
-import niffler.db.entity.AuthorityEntity;
-import niffler.db.entity.UserEntity;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import guru.qa.niffler.db.DataSourceProvider;
 import guru.qa.niffler.db.ServiceDB;
 import guru.qa.niffler.db.entity.AuthorityEntity;
 import guru.qa.niffler.db.entity.UserEntity;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.UUID;
-import javax.sql.DataSource;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 import java.sql.*;

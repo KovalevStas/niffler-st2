@@ -4,16 +4,13 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.jupiter.annotation.ApiLogin;
+import guru.qa.niffler.jupiter.annotation.GenerateCategory;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
+import guru.qa.niffler.jupiter.extension.GenerateCategoryExtension;
+import guru.qa.niffler.jupiter.extension.GenerateSpendExtension;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import io.qameta.allure.AllureId;
-import niffler.jupiter.annotation.GenerateCategory;
-import niffler.jupiter.extension.GenerateCategoryExtension;
-import niffler.jupiter.annotation.GenerateSpend;
-import niffler.jupiter.extension.GenerateSpendExtension;
-import niffler.model.CurrencyValues;
-import niffler.model.SpendJson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static guru.qa.niffler.test.BaseWebTest.CFG;
 
 @ExtendWith(GenerateCategoryExtension.class)
 @ExtendWith(GenerateSpendExtension.class)
@@ -29,7 +27,6 @@ public class SpendsWebTest {
     static {
         Configuration.browserSize = "1920x1080";
     }
-public class SpendsWebTest extends BaseWebTest {
 
     @BeforeEach
     void doLogin() {
@@ -69,7 +66,5 @@ public class SpendsWebTest extends BaseWebTest {
         $(".spendings-table tbody")
                 .$$("tr").filter(text(spend.getDescription()))
                 .shouldHave(CollectionCondition.size(0));
-            .$$("tr")
-            .shouldHave(CollectionCondition.size(0));
     }
 }

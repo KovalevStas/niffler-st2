@@ -1,17 +1,10 @@
 package guru.qa.niffler.test;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static guru.qa.niffler.jupiter.annotation.User.UserType.INVITATION_SENT;
-import static guru.qa.niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
-
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.jupiter.annotation.User;
 import guru.qa.niffler.jupiter.extension.UsersQueueExtension;
 import guru.qa.niffler.model.UserJson;
-import io.qameta.allure.Allure;
 import io.qameta.allure.AllureId;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -22,9 +15,9 @@ import java.time.Duration;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static guru.qa.niffler.jupiter.annotation.User.UserType.INVITATION_SENT;
+import static guru.qa.niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
 import static io.qameta.allure.Allure.step;
-import static niffler.jupiter.annotation.User.UserType.INVITATION_SENT;
-import static niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
 
 @Disabled
 @ExtendWith(UsersQueueExtension.class)

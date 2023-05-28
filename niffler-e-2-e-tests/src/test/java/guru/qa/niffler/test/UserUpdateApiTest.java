@@ -1,9 +1,9 @@
-package niffler.test;
+package guru.qa.niffler.test;
 
+import guru.qa.niffler.api.UserDataSrvice;
+import guru.qa.niffler.jupiter.annotation.ClasspathUser;
+import guru.qa.niffler.model.UserJson;
 import io.qameta.allure.AllureId;
-import niffler.api.UserDataSrvice;
-import niffler.jupiter.annotation.ClasspathUser;
-import niffler.model.UserJson;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
