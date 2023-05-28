@@ -57,12 +57,16 @@ dependencies {
     }
     testImplementation "io.qameta.allure:allure-okhttp3:${allureVersion}"
     testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
-    testImplementation "io.qameta.allure:allure-grpc:${allureVersion}"
+    testImplementation("io.qameta.allure:allure-grpc:${allureVersion}") {
+        exclude group: 'io.grpc'
+    }
     // WEB
     testImplementation "com.codeborne:selenide:${selenideVersion}"
     // Utils
     testImplementation 'commons-io:commons-io:2.11.0'
-    testImplementation 'com.github.javafaker:javafaker:1.0.2'
+    testImplementation('com.github.javafaker:javafaker:1.0.2') {
+        exclude group: "org.apache.commons"
+    }
     testImplementation 'com.google.code.findbugs:jsr305:3.0.2'
     // gRPC
     testImplementation "io.grpc:grpc-protobuf:${grpcVersion}"
