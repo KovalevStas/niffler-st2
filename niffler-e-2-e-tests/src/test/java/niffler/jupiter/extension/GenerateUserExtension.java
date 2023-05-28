@@ -32,6 +32,7 @@ public class GenerateUserExtension implements ParameterResolver, BeforeEachCallb
                 a -> {
                     AuthorityEntity ae = new AuthorityEntity();
                     ae.setAuthority(a);
+                    ae.setUser(ue);
                     return ae;
                 }
         ).toList());
