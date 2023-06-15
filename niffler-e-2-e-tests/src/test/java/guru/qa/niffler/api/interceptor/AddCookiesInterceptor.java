@@ -19,19 +19,21 @@ public class AddCookiesInterceptor implements Interceptor {
         String cookieXsrf = cookieContext.getCookie("XSRF-TOKEN");
         String jsessionId = cookieContext.getCookie("JSESSIONID");
 
-        final Builder builder = originalRequest.headers().newBuilder();
-        if (jsessionId != null) {
-            builder.add("JSESSIONID", jsessionId);
-        }
-        if (cookieXsrf != null) {
-            builder.add("XSRF-TOKEN", cookieXsrf);
-        }
+    final Builder builder = originalRequest.headers().newBuilder();
+    builder.removeAll("Cookie");
+    if (jsessionId != null) {
+      builder.add("Cookie", "JSESSIONID=" + jsessionId);
+    }
+    if (cookieXsrf != null) {
+      builder.add("Cookie", "XSRF-TOKEN=" + cookieXsrf);
+    }
 
         final Headers headers = builder.build();
 
-        return chain.proceed(originalRequest.newBuilder()
-                .headers(headers)
-                .url(originalRequest.url())
-                .build());
-    }
+    return chain.proceed(originalRequest.newBuilder()
+        .method(originalRequest.method(), originalRequest.body())
+        .headers(headers)
+        .url(originalRequest.url())
+        .build());
+  }
 }

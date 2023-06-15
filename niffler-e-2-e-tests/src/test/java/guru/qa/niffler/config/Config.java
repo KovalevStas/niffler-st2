@@ -2,24 +2,29 @@ package guru.qa.niffler.config;
 
 public interface Config {
 
-    static Config getConfig() {
-        if ("docker".equals(System.getProperty("env"))) {
-            return new DockerConfig();
-        }
-        return new LocalConfig();
-    }
+  static Config getConfig() {
+    if ("docker".equals(System.getProperty("test.env"))) {
+      return DockerConfig.INSTANCE;
+    } else if ("local".equals(System.getProperty("test.env"))) {
+      return LocalConfig.INSTANCE;
+    } else throw new IllegalStateException("Can`t read 'test.env' System property");
+  }
 
-    String getDBHost();
+  String getDBHost();
 
-    String getDBLogin();
+  String getDBLogin();
 
-    String getDBPassword();
+  String getDBPassword();
 
-    String getSpendUrl();
+  String getSpendUrl();
 
-    int getDBPort();
+  int getDBPort();
 
-    String getFrontUrl();
+  String getFrontUrl();
 
-    String getAuthUrl();
+  String getAuthUrl();
+
+  String getCurrencyGrpcAddress();
+
+  int getCurrencyGrpcPort();
 }
