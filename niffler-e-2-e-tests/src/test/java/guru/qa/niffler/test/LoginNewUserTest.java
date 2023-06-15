@@ -5,6 +5,7 @@ import guru.qa.niffler.db.dao.NifflerUsersDAO;
 import guru.qa.niffler.db.dao.NifflerUsersDAOJdbc;
 import guru.qa.niffler.db.entity.UserEntity;
 import guru.qa.niffler.jupiter.extension.GenerateUserExtension;
+import guru.qa.niffler.test.web.BaseWebTest;
 import io.qameta.allure.Allure;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

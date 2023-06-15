@@ -1,7 +1,7 @@
 package guru.qa.niffler;
 
 import guru.qa.niffler.jupiter.extension.GenerateSpendExtension;
-import guru.qa.niffler.test.RegistrationWebTest;
+import guru.qa.niffler.test.web.RegistrationWebTest;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
