@@ -4,10 +4,10 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.jupiter.annotation.ApiLogin;
-import guru.qa.niffler.jupiter.annotation.GenerateCategory;
+import guru.qa.niffler.jupiter.annotation.Category;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
+import guru.qa.niffler.jupiter.annotation.GenerateUser;
 import guru.qa.niffler.jupiter.extension.GenerateCategoryExtension;
-import guru.qa.niffler.jupiter.extension.GenerateSpendExtension;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import guru.qa.niffler.test.web.BaseWebTest;
@@ -22,7 +22,6 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 @ExtendWith(GenerateCategoryExtension.class)
-@ExtendWith(GenerateSpendExtension.class)
 @Disabled
 public class SpendsWebTest extends BaseWebTest {
 
@@ -39,19 +38,15 @@ public class SpendsWebTest extends BaseWebTest {
         $("button[type='submit']").click();
     }
 
-    @GenerateCategory(
-            username = "stanislav.kovalev",
-            category = "New category"
-    )
-    @GenerateSpend(
-            username = "stanislav.kovalev",
-            description = "QA GURU ADVANCED VOL 2",
-            currency = CurrencyValues.RUB,
-            amount = 52000.00,
-            category = "New category"
-    )
-    @ApiLogin(username = "dima", password = "12345")
-    @AllureId("101")
+    @ApiLogin(user = @GenerateUser(
+            categories = @Category("Обучение"),
+            spends = @GenerateSpend(
+                    description = "QA GURU ADVANCED VOL 2",
+                    currency = CurrencyValues.RUB,
+                    amount = 52000.00
+            )
+    ))
+    @AllureId("107")
     @Test
     void spendShouldBeDeletedByActionInTable(SpendJson spend) {
         Selenide.open(CFG.getFrontUrl() + "/main");

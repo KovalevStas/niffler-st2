@@ -1,6 +1,5 @@
 package guru.qa.niffler;
 
-import guru.qa.niffler.jupiter.extension.GenerateSpendExtension;
 import guru.qa.niffler.test.web.RegistrationWebTest;
 
 import java.util.concurrent.ExecutorService;
@@ -11,8 +10,6 @@ public class ThreadExecutor {
     static ExecutorService executorService = Executors.newFixedThreadPool(6);
 
     public static void main(String[] args) {
-
-        GenerateSpendExtension extension = new GenerateSpendExtension();
 
         executorService.execute(() -> {
             RegistrationWebTest testObject = new RegistrationWebTest();

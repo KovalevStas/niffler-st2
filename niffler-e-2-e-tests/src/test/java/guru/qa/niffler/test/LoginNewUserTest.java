@@ -4,11 +4,12 @@ import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.db.dao.NifflerUsersDAO;
 import guru.qa.niffler.db.dao.NifflerUsersDAOJdbc;
 import guru.qa.niffler.db.entity.UserEntity;
-import guru.qa.niffler.jupiter.extension.GenerateUserExtension;
+import guru.qa.niffler.jupiter.annotation.GenerateUser;
+import guru.qa.niffler.model.UserJson;
 import guru.qa.niffler.test.web.BaseWebTest;
 import io.qameta.allure.Allure;
+import io.qameta.allure.AllureId;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -18,12 +19,13 @@ import static com.codeborne.selenide.Selenide.$;
 public class LoginNewUserTest extends BaseWebTest {
 
     @Test
-    @ExtendWith(GenerateUserExtension.class)
-    void loginTest(UserEntity ue) {
+    @AllureId("118")
+    @GenerateUser()
+    void loginTest(UserJson user) {
         Allure.step("open page", () -> Selenide.open("http://127.0.0.1:3000/main"));
         $("a[href*='redirect']").click();
-        $("input[name='username']").setValue(ue.getUsername());
-        $("input[name='password']").setValue(ue.getPassword());
+        $("input[name='username']").setValue(user.getUsername());
+        $("input[name='password']").setValue(user.getPassword());
         $("button[type='submit']").click();
 
         $("a[href*='friends']").click();
@@ -31,8 +33,9 @@ public class LoginNewUserTest extends BaseWebTest {
     }
 
     @Test
-    @ExtendWith(GenerateUserExtension.class)
-    void userLifecycleTest(UserEntity ue) {
+    @AllureId("119")
+    @GenerateUser()
+    void userLifecycleTest(UserJson ue) {
         UserEntity user;
 
         final NifflerUsersDAO usersDAO = new NifflerUsersDAOJdbc();

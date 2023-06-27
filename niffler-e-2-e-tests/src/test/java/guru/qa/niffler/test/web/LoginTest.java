@@ -20,7 +20,7 @@ public class LoginTest extends BaseWebTest {
     private static final String TEST_PWD = "12345";
 
     @GenerateUser()
-    @AllureId("102")
+    @AllureId("100")
     @Test
     void loginTest(UserJson user) throws IOException {
         Allure.step("open page", () -> Selenide.open(CFG.getFrontUrl() + "/main"));

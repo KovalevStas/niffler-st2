@@ -13,9 +13,9 @@ public class RegistrationWebTest extends BaseWebTest {
     private final RegistrationPage page = new RegistrationPage();
 
     @Test
-    @AllureId("103")
+    @AllureId("101")
     public void errorMessageShouldBeVisibleInCaseThatPasswordsAreDifferent() {
-        Selenide.open(CFG.getFrontUrl() + RegistrationPage.URL);
+        Selenide.open("http://127.0.0.1:9000/register");
 
         page.checkThatPageLoaded()
                 .fillRegistrationForm("wdfsdasfs", "123", "12345")
@@ -23,29 +23,29 @@ public class RegistrationWebTest extends BaseWebTest {
     }
 
     @Test
-    @AllureId("104")
+    @AllureId("105")
     public void errorMessageShouldBeVisibleInCaseThatUsernameNotUniq() {
         final String username = "dima";
 
-        Selenide.open(CFG.getFrontUrl() + RegistrationPage.URL);
+        Selenide.open("http://127.0.0.1:9000/register");
         page.checkThatPageLoaded()
                 .fillRegistrationForm(username, "12345", "12345")
                 .checkErrorMessage("Username `" + username + "` already exists");
     }
 
     @Test
-    @AllureId("105")
+    @AllureId("106")
     public void errorMessageShouldBeVisibleInCaseThatPasswordsLessThan3Symbols() {
-        Selenide.open(CFG.getFrontUrl() + RegistrationPage.URL);
+        Selenide.open("http://127.0.0.1:9000/register");
         page.checkThatPageLoaded()
                 .fillRegistrationForm("wdfsdadfdaasfs", "1", "1")
                 .checkErrorMessage("Allowed password length should be from 3 to 12 characters");
     }
 
     @Test
-    @AllureId("106")
+    @AllureId("108")
     public void errorMessageShouldBeVisibleInCaseThatUsernameLessThan3Symbols() {
-        Selenide.open(CFG.getFrontUrl() + RegistrationPage.URL);
+        Selenide.open("http://127.0.0.1:9000/register");
         page.checkThatPageLoaded()
                 .fillRegistrationForm("g", "12345", "12345")
                 .checkErrorMessage("Allowed username length should be from 3 to 50 characters");

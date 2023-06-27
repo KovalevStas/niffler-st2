@@ -14,8 +14,6 @@ public @interface GenerateSpend {
 
     String description();
 
-    String username();
-
     String category() default "";
 
     double amount();

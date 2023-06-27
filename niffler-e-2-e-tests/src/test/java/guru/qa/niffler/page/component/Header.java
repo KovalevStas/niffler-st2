@@ -12,8 +12,6 @@ public class Header extends BaseComponent<Header> {
 
     private final SelenideElement mainPageBtn = $("a[href*='main']");
     private final SelenideElement friendsPageBtn = $("a[href*='friends']");
-    private final SelenideElement mainPageBtn = $("a[href*='main']");
-    private final SelenideElement friendsPageBtn = $("a[href*='friends']");
     private final SelenideElement peoplePageBtn = $("a[href*='people']");
     private final SelenideElement logoutBtn = $(".button-icon_type_logout");
     private final SelenideElement profilePageBtn = $("a[href*='profile']");

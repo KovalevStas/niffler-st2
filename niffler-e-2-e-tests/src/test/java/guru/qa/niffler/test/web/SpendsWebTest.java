@@ -27,7 +27,7 @@ public class SpendsWebTest extends BaseWebTest {
                     amount = 52000.00
             )
     ))
-    @AllureId("107")
+    @AllureId("109")
     @Test
     void spendShouldBeDeletedByActionInTable(UserJson user) {
         final SpendJson spend = user.getSpends().get(0);
@@ -56,7 +56,7 @@ public class SpendsWebTest extends BaseWebTest {
                     amount = 52000.00
             )
     ))
-    @AllureId("108")
+    @AllureId("110")
     @Test
     void spendInTableShouldBeEqualToGiven(UserJson user) {
         final SpendJson spend = user.getSpends().get(0);

@@ -8,17 +8,6 @@ import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
 import java.lang.reflect.Parameter;
-import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
-import org.junit.jupiter.api.extension.ParameterResolver;
-
-import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -57,34 +46,12 @@ public class UsersQueueExtension implements
     @Override
     public void beforeEach(ExtensionContext context) {
         final String testId = getTestId(context);
-        List<Map<UserType, UserJson>> users = new ArrayList<>();
-        Parameter[] testParameters = context.getRequiredTestMethod().getParameters();
-        for (Parameter parameter : testParameters) {
-            User desiredUser = parameter.getAnnotation(User.class);
-            if (desiredUser != null) {
-                UserType userType = desiredUser.userType();
-    @Override
-    public void beforeEach(ExtensionContext context) {
-        final String testId = getTestId(context);
         Parameter[] testParameters = context.getRequiredTestMethod().getParameters();
         for (Parameter parameter : testParameters) {
             User desiredUser = parameter.getAnnotation(User.class);
             if (desiredUser != null) {
                 UserType userType = desiredUser.userType();
 
-                UserJson user = null;
-                while (user == null) {
-                    switch (userType) {
-                        case WITH_FRIENDS -> user = USERS_WITH_FRIENDS_QUEUE.poll();
-                        case INVITATION_SENT -> user = USERS_INVITATION_SENT_QUEUE.poll();
-                        case INVITATION_RECEIVED -> user = USERS_INVITATION_RECEIVED_QUEUE.poll();
-                    }
-                }
-                users.add(Map.of(userType, user));
-                context.getStore(USER_EXTENSION_NAMESPACE).put(testId, users);
-            }
-        }
-    }
                 UserJson user = null;
                 while (user == null) {
                     switch (userType) {
@@ -99,22 +66,6 @@ public class UsersQueueExtension implements
         }
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void afterTestExecution(ExtensionContext context) {
-        final String testId = getTestId(context);
-        List<Map<UserType, UserJson>> users = (List<Map<UserType, UserJson>>) context.getStore(USER_EXTENSION_NAMESPACE)
-                .get(testId);
-        users.forEach((user) -> {
-            UserType userType = user.keySet().iterator().next();
-            switch (userType) {
-                case WITH_FRIENDS -> USERS_WITH_FRIENDS_QUEUE.add(user.get(userType));
-                case INVITATION_SENT -> USERS_INVITATION_SENT_QUEUE.add(user.get(userType));
-                case INVITATION_RECEIVED -> USERS_INVITATION_RECEIVED_QUEUE.add(user.get(userType));
-            }
-        });
-
-    }
     @SuppressWarnings("unchecked")
     @Override
     public void afterTestExecution(ExtensionContext context) {
@@ -142,20 +93,9 @@ public class UsersQueueExtension implements
     public UserJson resolveParameter(ParameterContext parameterContext,
                                      ExtensionContext extensionContext) throws ParameterResolutionException {
         final String testId = getTestId(extensionContext);
-        ArrayList<Map<UserType, UserJson>> users = (ArrayList<Map<UserType, UserJson>>) extensionContext.getStore(USER_EXTENSION_NAMESPACE)
-                .get(testId);
-    @SuppressWarnings("unchecked")
-    @Override
-    public UserJson resolveParameter(ParameterContext parameterContext,
-                                     ExtensionContext extensionContext) throws ParameterResolutionException {
-        final String testId = getTestId(extensionContext);
         Map<UserType, UserJson> user = (Map<UserType, UserJson>) extensionContext.getStore(USER_EXTENSION_NAMESPACE)
                 .get(testId);
 
-        return (UserJson) users.stream().collect(ArrayList::new,
-                (arr, userMap) -> arr.add(userMap.entrySet().iterator().next().getValue()),
-                ArrayList::addAll).get(parameterContext.getIndex());
-    }
         return user.values().iterator().next();
     }
 
@@ -163,17 +103,5 @@ public class UsersQueueExtension implements
         return Objects
                 .requireNonNull(context.getRequiredTestMethod().getAnnotation(AllureId.class))
                 .value();
-    }
-    private String getTestId(ExtensionContext context) {
-        return Objects
-                .requireNonNull(context.getRequiredTestMethod().getAnnotation(AllureId.class))
-                .value();
-    }
-
-    private static UserJson userJson(String userName, String password) {
-        UserJson user = new UserJson();
-        user.setUsername(userName);
-        user.setPassword(password);
-        return user;
     }
 }
