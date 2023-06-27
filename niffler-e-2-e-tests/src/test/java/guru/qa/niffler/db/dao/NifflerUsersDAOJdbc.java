@@ -128,21 +128,33 @@ public class NifflerUsersDAOJdbc implements NifflerUsersDAO {
 
     @Override
     public int removeUser(UserEntity user) {
-        int executeDelete;
-        try (Connection conn = ds.getConnection();
-             PreparedStatement st = conn.prepareStatement("DELETE from authorities a where a.user_id = ?")) {
-            st.setObject(1, user.getId());
-            st.executeUpdate();
+        int executeUpdate;
+
+        try (Connection conn = ds.getConnection()) {
+
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement deleteUserSt = conn.prepareStatement("DELETE FROM users WHERE id = ?");
+                 PreparedStatement deleteAuthoritySt = conn.prepareStatement(
+                         "DELETE FROM authorities WHERE user_id = ?")) {
+                deleteUserSt.setObject(1, user.getId());
+                deleteAuthoritySt.setObject(1, user.getId());
+
+                deleteAuthoritySt.executeUpdate();
+                executeUpdate = deleteUserSt.executeUpdate();
+
+            } catch (SQLException e) {
+                conn.rollback();
+                conn.setAutoCommit(true);
+                throw new RuntimeException(e);
+            }
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        try (Connection conn = ds.getConnection();
-             PreparedStatement st = conn.prepareStatement("DELETE from users u where u.id = ?")) {
-            st.setObject(1, user.getId());
-            executeDelete = st.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return executeDelete;
+        return executeUpdate;
     }
 }

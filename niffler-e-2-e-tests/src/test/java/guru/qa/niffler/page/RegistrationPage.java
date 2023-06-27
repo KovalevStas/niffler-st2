@@ -1,14 +1,13 @@
 package guru.qa.niffler.page;
 
 import com.codeborne.selenide.SelenideElement;
-import guru.qa.niffler.config.Config;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
 public class RegistrationPage extends BasePage<RegistrationPage> {
 
-    public static final String URL = Config.getConfig().getAuthUrl() + "/register";
+    public static final String URL = "/register";
 
     private final SelenideElement header = $(".form__paragraph");
     private final SelenideElement usernameInput = $("#username");

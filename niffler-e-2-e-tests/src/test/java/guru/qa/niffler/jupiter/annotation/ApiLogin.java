@@ -9,7 +9,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface ApiLogin {
 
-    String username();
+    GenerateUser[] user() default {};
 
-    String password();
+    String username() default "";
+
+    String password() default "";
 }

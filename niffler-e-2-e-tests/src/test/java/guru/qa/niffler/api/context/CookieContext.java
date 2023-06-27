@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class CookieContext {
 
+    private final Map<String, String> storage;
     private static final ThreadLocal<CookieContext> INSTANCE = ThreadLocal.withInitial(
             CookieContext::new);
-    private final Map<String, String> storage;
 
     private CookieContext() {
         storage = new HashMap<>();

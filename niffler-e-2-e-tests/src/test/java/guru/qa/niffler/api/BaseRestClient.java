@@ -37,8 +37,8 @@ public abstract class BaseRestClient {
             }
         }
 
-    builder.addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(BODY));
-    this.httpClient = builder.build();
+        builder.addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(BODY));
+        this.httpClient = builder.build();
 
         this.retrofit = new Retrofit.Builder()
                 .client(httpClient)

@@ -13,7 +13,7 @@ public interface SuiteExtension extends BeforeAllCallback {
     }
 
     @Override
-    default void beforeAll(ExtensionContext context){
+    default void beforeAll(ExtensionContext context) throws Exception {
         context.getRoot().getStore(Namespace.GLOBAL)
                 .getOrComputeIfAbsent(
                         SuiteExtension.class,

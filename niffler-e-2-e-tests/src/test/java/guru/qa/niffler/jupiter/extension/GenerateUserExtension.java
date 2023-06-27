@@ -1,59 +1,49 @@
 package guru.qa.niffler.jupiter.extension;
 
-import com.github.javafaker.Faker;
-import guru.qa.niffler.db.dao.NifflerUsersDAO;
-import guru.qa.niffler.db.dao.NifflerUsersDAOHibernate;
-import guru.qa.niffler.db.entity.Authority;
-import guru.qa.niffler.db.entity.AuthorityEntity;
-import guru.qa.niffler.db.entity.UserEntity;
-import org.junit.jupiter.api.extension.*;
+import guru.qa.niffler.jupiter.annotation.GenerateUser;
+import guru.qa.niffler.model.UserJson;
+import io.qameta.allure.AllureId;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolutionException;
+import org.junit.jupiter.api.extension.ParameterResolver;
 
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.Objects;
 
-public class GenerateUserExtension implements ParameterResolver, BeforeEachCallback, AfterEachCallback {
+public class GenerateUserExtension implements BeforeEachCallback, ParameterResolver {
 
     public static ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace
             .create(GenerateUserExtension.class);
 
-    private final NifflerUsersDAO usersDAO = new NifflerUsersDAOHibernate();
-    Faker usFaker = new Faker(new Locale("en-US"));
+
+    private static final GenerateUserService generateUserService = new GenerateUserService();
 
     @Override
-    public void beforeEach(ExtensionContext context) {
-        UserEntity ue = new UserEntity();
-        ue.setUsername(usFaker.name().username());
-        ue.setPassword("12345");
-        ue.setEnabled(true);
-        ue.setAccountNonExpired(true);
-        ue.setAccountNonLocked(true);
-        ue.setCredentialsNonExpired(true);
-        ue.setAuthorities(Arrays.stream(Authority.values()).map(
-                a -> {
-                    AuthorityEntity ae = new AuthorityEntity();
-                    ae.setAuthority(a);
-                    ae.setUser(ue);
-                    return ae;
-                }
-        ).toList());
-        usersDAO.createUser(ue);
-        context.getStore(NAMESPACE).put("user", ue);
+    public void beforeEach(ExtensionContext context) throws Exception {
+        GenerateUser annotation = context.getRequiredTestMethod()
+                .getAnnotation(GenerateUser.class);
+
+        if (annotation != null) {
+            context.getStore(NAMESPACE).put(getTestId(context), generateUserService.generateUser(annotation));
+        }
     }
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext,
                                      ExtensionContext extensionContext) throws ParameterResolutionException {
-        return parameterContext.getParameter().getType().isAssignableFrom(UserEntity.class);
+        return parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
     }
 
     @Override
-    public UserEntity resolveParameter(ParameterContext parameterContext,
-                                       ExtensionContext extensionContext) throws ParameterResolutionException {
-        return extensionContext.getStore(NAMESPACE).get("user", UserEntity.class);
+    public UserJson resolveParameter(ParameterContext parameterContext,
+                                     ExtensionContext extensionContext) throws ParameterResolutionException {
+        return extensionContext.getStore(NAMESPACE).get(getTestId(extensionContext), UserJson.class);
     }
 
-    @Override
-    public void afterEach(ExtensionContext context) {
-        usersDAO.removeUser((UserEntity) context.getStore(NAMESPACE).get("user"));
+    private String getTestId(ExtensionContext context) {
+        return Objects
+                .requireNonNull(context.getRequiredTestMethod().getAnnotation(AllureId.class))
+                .value();
     }
 }

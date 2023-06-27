@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class ClasspathUserConverter implements ArgumentConverter {
 
-    private static ObjectMapper om = new ObjectMapper();
-    private ClassLoader cl = ClasspathUserConverter.class.getClassLoader();
+    private final ClassLoader cl = ClasspathUserConverter.class.getClassLoader();
+    private static final ObjectMapper om = new ObjectMapper();
 
     @Override
     public UserJson convert(Object source, ParameterContext context)

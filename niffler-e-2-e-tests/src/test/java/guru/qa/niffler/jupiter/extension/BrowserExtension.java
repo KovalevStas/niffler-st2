@@ -27,7 +27,7 @@ public class BrowserExtension implements TestExecutionExceptionHandler, AfterEac
     }
 
     @Override
-    public void afterEach(ExtensionContext context) throws Exception {
+    public void afterEach(ExtensionContext context) {
         if (WebDriverRunner.hasWebDriverStarted()) {
             Selenide.closeWebDriver();
         }
