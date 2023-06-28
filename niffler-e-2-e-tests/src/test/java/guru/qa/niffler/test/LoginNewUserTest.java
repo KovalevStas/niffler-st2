@@ -4,7 +4,11 @@ import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.db.dao.NifflerUsersDAO;
 import guru.qa.niffler.db.dao.NifflerUsersDAOJdbc;
 import guru.qa.niffler.db.entity.UserEntity;
+import guru.qa.niffler.jupiter.annotation.ApiLogin;
+import guru.qa.niffler.jupiter.annotation.Category;
+import guru.qa.niffler.jupiter.annotation.GenerateSpend;
 import guru.qa.niffler.jupiter.annotation.GenerateUser;
+import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.UserJson;
 import guru.qa.niffler.test.web.BaseWebTest;
 import io.qameta.allure.Allure;
@@ -20,16 +24,11 @@ public class LoginNewUserTest extends BaseWebTest {
 
     @Test
     @AllureId("118")
-    @GenerateUser()
+    @ApiLogin(user = @GenerateUser())
     void loginTest(UserJson user) {
-        Allure.step("open page", () -> Selenide.open("http://127.0.0.1:3000/main"));
-        $("a[href*='redirect']").click();
-        $("input[name='username']").setValue(user.getUsername());
-        $("input[name='password']").setValue(user.getPassword());
-        $("button[type='submit']").click();
-
+        Selenide.open(CFG.getFrontUrl() + "/main");
         $("a[href*='friends']").click();
-        $(".header").should(visible).shouldHave(text("Niffler. The coin keeper."));
+        $(".main-content__section").should(visible).shouldHave(text("There are no friends yet!"));
     }
 
     @Test
