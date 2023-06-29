@@ -1,7 +1,7 @@
 package niffler.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import niffler_userdata.Friend;
+import guru.qa.niffler.userdata.wsdl.Friend;
 
 public class FriendJson {
 

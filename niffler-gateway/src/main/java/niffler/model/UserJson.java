@@ -2,14 +2,16 @@ package niffler.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import guru.qa.niffler.userdata.wsdl.Currency;
+import guru.qa.niffler.userdata.wsdl.User;
 import jakarta.validation.constraints.Size;
 import niffler.model.graphql.UpdateUserInfoInput;
-import niffler.userdata.wsdl.Currency;
-import niffler.userdata.wsdl.User;
 
 import java.util.Objects;
 import java.util.UUID;
 
+import static guru.qa.niffler.userdata.wsdl.FriendState.VOID;
+import static guru.qa.niffler.userdata.wsdl.FriendState.valueOf;
 import static niffler.config.NifflerGatewayServiceConfig.THREE_MB;
 
 public class UserJson {
@@ -111,8 +113,8 @@ public class UserJson {
         u.setCurrency(Currency.valueOf(getCurrency().name()));
         u.setPhoto(getPhoto());
         u.setFriendState(getFriendState() == null ?
-                niffler.userdata.wsdl.FriendState.VOID :
-                niffler.userdata.wsdl.FriendState.valueOf(getFriendState().name()));
+                VOID :
+                valueOf(getFriendState().name()));
         return u;
     }
 

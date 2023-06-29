@@ -1,13 +1,13 @@
 package niffler.ws;
 
+import guru.qa.niffler.userdata.wsdl.AllUsersRequest;
+import guru.qa.niffler.userdata.wsdl.AllUsersResponse;
+import guru.qa.niffler.userdata.wsdl.CurrentUserRequest;
+import guru.qa.niffler.userdata.wsdl.CurrentUserResponse;
+import guru.qa.niffler.userdata.wsdl.UpdateUserInfoRequest;
+import guru.qa.niffler.userdata.wsdl.UpdateUserInfoResponse;
 import niffler.model.UserJson;
 import niffler.service.UserDataService;
-import niffler_userdata.AllUsersRequest;
-import niffler_userdata.AllUsersResponse;
-import niffler_userdata.CurrentUserRequest;
-import niffler_userdata.CurrentUserResponse;
-import niffler_userdata.UpdateUserInfoRequest;
-import niffler_userdata.UpdateUserInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;

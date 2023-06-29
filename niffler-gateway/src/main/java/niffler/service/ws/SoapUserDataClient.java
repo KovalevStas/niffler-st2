@@ -1,27 +1,26 @@
 package niffler.service.ws;
 
+import guru.qa.niffler.userdata.wsdl.AcceptInvitationRequest;
+import guru.qa.niffler.userdata.wsdl.AcceptInvitationResponse;
+import guru.qa.niffler.userdata.wsdl.AddFriendRequest;
+import guru.qa.niffler.userdata.wsdl.AddFriendResponse;
+import guru.qa.niffler.userdata.wsdl.AllUsersRequest;
+import guru.qa.niffler.userdata.wsdl.AllUsersResponse;
+import guru.qa.niffler.userdata.wsdl.CurrentUserRequest;
+import guru.qa.niffler.userdata.wsdl.CurrentUserResponse;
+import guru.qa.niffler.userdata.wsdl.DeclineInvitationRequest;
+import guru.qa.niffler.userdata.wsdl.DeclineInvitationResponse;
+import guru.qa.niffler.userdata.wsdl.FriendsRequest;
+import guru.qa.niffler.userdata.wsdl.FriendsResponse;
+import guru.qa.niffler.userdata.wsdl.InvitationsRequest;
+import guru.qa.niffler.userdata.wsdl.InvitationsResponse;
+import guru.qa.niffler.userdata.wsdl.RemoveFriendRequest;
+import guru.qa.niffler.userdata.wsdl.UpdateUserInfoRequest;
+import guru.qa.niffler.userdata.wsdl.UpdateUserInfoResponse;
 import jakarta.annotation.Nonnull;
 import niffler.model.FriendJson;
 import niffler.model.UserJson;
 import niffler.service.UserDataClient;
-import niffler.userdata.wsdl.AcceptInvitationRequest;
-import niffler.userdata.wsdl.AcceptInvitationResponse;
-import niffler.userdata.wsdl.AddFriendRequest;
-import niffler.userdata.wsdl.AddFriendResponse;
-import niffler.userdata.wsdl.AllUsersRequest;
-import niffler.userdata.wsdl.AllUsersResponse;
-import niffler.userdata.wsdl.CurrentUserRequest;
-import niffler.userdata.wsdl.CurrentUserResponse;
-import niffler.userdata.wsdl.DeclineInvitationRequest;
-import niffler.userdata.wsdl.DeclineInvitationResponse;
-import niffler.userdata.wsdl.FriendsRequest;
-import niffler.userdata.wsdl.FriendsResponse;
-import niffler.userdata.wsdl.InvitationsRequest;
-import niffler.userdata.wsdl.InvitationsResponse;
-import niffler.userdata.wsdl.RemoveFriendRequest;
-import niffler.userdata.wsdl.RemoveFriendResponse;
-import niffler.userdata.wsdl.UpdateUserInfoRequest;
-import niffler.userdata.wsdl.UpdateUserInfoResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
@@ -149,7 +148,7 @@ public class SoapUserDataClient extends WebServiceGatewaySupport implements User
         request.setUsername(username);
         request.setFriendUsername(friendUsername);
 
-        RemoveFriendResponse response = (RemoveFriendResponse) getWebServiceTemplate()
+        guru.qa.niffler.userdata.wsdl.RemoveFriendResponse response = (guru.qa.niffler.userdata.wsdl.RemoveFriendResponse) getWebServiceTemplate()
                 .marshalSendAndReceive(getDefaultUri(), request);
 
         return response.getUser().stream().map(UserJson::fromJaxb).toList();

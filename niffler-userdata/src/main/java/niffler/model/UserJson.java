@@ -2,14 +2,16 @@ package niffler.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import guru.qa.niffler.userdata.wsdl.Currency;
+import guru.qa.niffler.userdata.wsdl.User;
 import niffler.data.CurrencyValues;
 import niffler.data.UserEntity;
-import niffler_userdata.Currency;
-import niffler_userdata.User;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
+
+import static guru.qa.niffler.userdata.wsdl.FriendState.VOID;
 
 public class UserJson {
     @JsonProperty("id")
@@ -124,7 +126,7 @@ public class UserJson {
         u.setSurname(getSurname());
         u.setCurrency(Currency.valueOf(getCurrency().name()));
         u.setPhoto(getPhoto());
-        u.setFriendState(getFriendState() == null ? niffler_userdata.FriendState.VOID : niffler_userdata.FriendState.valueOf(getFriendState().name()));
+        u.setFriendState(getFriendState() == null ? VOID : guru.qa.niffler.userdata.wsdl.FriendState.valueOf(getFriendState().name()));
         return u;
     }
 
