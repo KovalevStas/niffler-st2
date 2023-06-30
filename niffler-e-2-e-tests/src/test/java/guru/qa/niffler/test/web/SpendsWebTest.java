@@ -12,6 +12,11 @@ import guru.qa.niffler.model.UserJson;
 import io.qameta.allure.AllureId;
 import org.junit.jupiter.api.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -66,5 +71,13 @@ public class SpendsWebTest extends BaseWebTest {
         $(".spendings-table tbody")
                 .$$("tr")
                 .shouldHave(spends(spend));
+    }
+
+    @Test
+    void name() throws ParseException {
+        String dateInString = "30 Jun 23";
+        SimpleDateFormat formatter6 = new SimpleDateFormat("dd MMM yy", new Locale("en", "EN"));
+        Date date6 = formatter6.parse(dateInString);
+        System.out.println(date6);
     }
 }
