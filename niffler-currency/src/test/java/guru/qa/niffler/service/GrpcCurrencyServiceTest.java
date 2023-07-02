@@ -1,25 +1,30 @@
 package guru.qa.niffler.service;
 
+import com.google.protobuf.Empty;
+import guru.qa.grpc.niffler.grpc.CalculateRequest;
+import guru.qa.grpc.niffler.grpc.CalculateResponse;
+import guru.qa.grpc.niffler.grpc.CurrencyResponse;
+import guru.qa.grpc.niffler.grpc.CurrencyValues;
 import guru.qa.niffler.data.CurrencyEntity;
 import guru.qa.niffler.data.repository.CurrencyRepository;
+import io.grpc.stub.StreamObserver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static guru.qa.niffler.data.CurrencyValues.EUR;
-import static guru.qa.niffler.data.CurrencyValues.KZT;
-import static guru.qa.niffler.data.CurrencyValues.RUB;
-import static guru.qa.niffler.data.CurrencyValues.USD;
-import static org.mockito.Mockito.lenient;
+import static guru.qa.niffler.data.CurrencyValues.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GrpcCurrencyServiceTest {
@@ -72,5 +77,39 @@ class GrpcCurrencyServiceTest {
                 desiredCurrency, testCurrencies);
 
         Assertions.assertEquals(expectedResult, result.doubleValue());
+    }
+
+    static Stream<Arguments> courseForCurrency() {
+        return Stream.of(
+                Arguments.of(guru.qa.grpc.niffler.grpc.CurrencyValues.RUB, 0.015),
+                Arguments.of(guru.qa.grpc.niffler.grpc.CurrencyValues.USD, 1.0),
+                Arguments.of(guru.qa.grpc.niffler.grpc.CurrencyValues.EUR, 1.08),
+                Arguments.of(guru.qa.grpc.niffler.grpc.CurrencyValues.KZT, 0.0021)
+        );
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    void courseForCurrency(CurrencyValues currency, double expectedResult) {
+        BigDecimal result = grpcCurrencyService.courseForCurrency(currency, testCurrencies);
+        Assertions.assertEquals(expectedResult, result.doubleValue());
+    }
+
+    @Test
+    void calculateRate() {
+        StreamObserver<CalculateResponse> responseObserverMock = Mockito.mock(StreamObserver.class);
+        CalculateRequest calculateRequest = CalculateRequest.getDefaultInstance();
+        grpcCurrencyService.calculateRate(calculateRequest, responseObserverMock);
+        verify(responseObserverMock, times(1)).onNext(any());
+        verify(responseObserverMock, times(1)).onCompleted();
+    }
+
+    @Test
+    void getAllCurrencies() {
+        StreamObserver<CurrencyResponse> responseObserverMock = Mockito.mock(StreamObserver.class);
+        Empty getRequest = Empty.getDefaultInstance();
+        grpcCurrencyService.getAllCurrencies(getRequest, responseObserverMock);
+        verify(responseObserverMock, times(1)).onNext(any());
+        verify(responseObserverMock, times(1)).onCompleted();
     }
 }
