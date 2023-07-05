@@ -71,4 +71,9 @@ public class DockerConfig implements Config {
     public int getCurrencyGrpcPort() {
         return 8092;
     }
+
+    @Override
+    public String kafkaAddress() {
+        return "kafka:9092";
+    }
 }

@@ -1,5 +1,6 @@
 package guru.qa.niffler.jupiter.extension;
 
+import com.google.common.base.Stopwatch;
 import guru.qa.niffler.api.AuthRestClient;
 import guru.qa.niffler.api.SpendRestClient;
 import guru.qa.niffler.api.UserdataRestClient;
@@ -14,6 +15,7 @@ import guru.qa.niffler.utils.DataUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 
@@ -96,9 +98,25 @@ public class GenerateUserService {
         final String username = DataUtils.generateRandomUsername();
         final String password = DataUtils.generateRandomPassword();
         authClient.register(username, password);
-
-        UserJson user = userdataClient.currentUser(username);
+        UserJson user = waitWhileUserToBeConsumed(username, 5000L);
         user.setPassword(password);
         return user;
+    }
+
+    private UserJson waitWhileUserToBeConsumed(String username, long maxWaitTime) {
+        Stopwatch sw = Stopwatch.createStarted();
+        while (sw.elapsed(TimeUnit.MILLISECONDS) < maxWaitTime) {
+            UserJson userJson = userdataClient.currentUser(username);
+            if (userJson != null) {
+                return userJson;
+            } else {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        throw new IllegalStateException("Can`t obtain user from niffler-userdata");
     }
 }

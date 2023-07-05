@@ -71,4 +71,9 @@ public class LocalConfig implements Config {
     public int getCurrencyGrpcPort() {
         return 8092;
     }
+
+    @Override
+    public String kafkaAddress() {
+        return "localhost:9092";
+    }
 }

@@ -1,5 +1,7 @@
 package guru.qa.niffler.config;
 
+import java.util.List;
+
 public interface Config {
 
     static Config getConfig() {
@@ -31,4 +33,10 @@ public interface Config {
     String getCurrencyGrpcAddress();
 
     int getCurrencyGrpcPort();
+
+    String kafkaAddress();
+
+    default List<String> kafkaTopics() {
+        return List.of("users");
+    }
 }
